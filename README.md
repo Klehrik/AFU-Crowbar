@@ -71,6 +71,8 @@ cmd.Send();
 ```cs
 using AFUtils;
 
+// ...
+
 var packet = new Packet(
     // The unique identifier for the packet; consider prepending your mod name or something
     "myMod_myPacket",
@@ -82,8 +84,6 @@ var packet = new Packet(
         LoggerInstance.Msg($"{data["abc"]}, {data["def"]}");
     }
 );
-
-// ...
 
 // Send the packet to all other clients
 // Returns `true` if successful
@@ -98,6 +98,8 @@ packet.Send(
 
 ### Misc
 ```cs
+// AFUtils.Misc
+
 // Returns the Humanoid_View belonging to the local player.
 public static Humanoid_View GetLocalHumanoidView()
 
