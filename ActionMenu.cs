@@ -1,6 +1,6 @@
 ﻿using HarmonyLib;
 using Il2CppHUD;
-using Il2CppCustomUIRenderingAccess;
+using Il2CppCustomUIRendering_Access;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
 namespace AFUtils;
@@ -122,7 +122,7 @@ public static class ActionMenu
 
         [HarmonyPostfix]
         [HarmonyPatch(nameof(RadialMenu_Component.HandleSelection))]
-        static void Postfix(Il2CppHUD.RadialMenu_Component __instance, ref int selectedItemIndex, ref int selectedItemValue)
+        static void HandleSelectionPostfix(Il2CppHUD.RadialMenu_Component __instance, ref int selectedItemIndex, ref int selectedItemValue)
         {
             // Intercept action IDs that are used here
             if (Option.callbacks.ContainsKey(selectedItemValue))

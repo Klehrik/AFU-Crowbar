@@ -1,5 +1,5 @@
 # AFUtils
-Small miscellaneous library for modding Airframe Ultra Beta v0.34.
+Small miscellaneous library for modding Airframe Ultra.
 
 ## Setup
 - Download `AFUtils.dll` (and optionally `AFUtils.xml` for documentation) and place them in the `Mods` folder.
@@ -37,76 +37,4 @@ ActionMenu.RegisterForCollection(
         ActionMenu.AddOption(option, "specific text");
     }
 );
-```
-
-### Command
-```cs
-using AFUtils;
-
-// ...
-
-var cmd = new Command(
-    // The unique identifier for the command; consider prepending your mod name or something
-    "myMod_myCommand",
-
-    // This function will run when the command is sent
-    // It executes for all players, including the caller
-    (Il2CppQuantum.Frame f) =>
-    {
-        LoggerInstance.Msg("AAAAHHHRGH!");
-
-        // For the caller specifically, this will run
-        // multiple times (on every predicted frame + the final verified one)
-        // If you don't want this, add a check for `f.IsVerified`
-        if (!f.IsVerified) return;
-        LoggerInstance.Msg("This line prints once");
-    }
-);
-
-// Execute the command for all players
-cmd.Send();
-```
-
-### Packet
-```cs
-using AFUtils;
-
-// ...
-
-var packet = new Packet(
-    // The unique identifier for the packet; consider prepending your mod name or something
-    "myMod_myPacket",
-
-    // This function will run when the packet is received
-    // It executes for all clients excluding the sender
-    (Il2CppPhoton.Realtime.Player player, Dictionary<string, string> data) =>
-    {
-        LoggerInstance.Msg($"{data["abc"]}, {data["def"]}");
-    }
-);
-
-// Send the packet to all other clients
-// Returns `true` if successful
-packet.Send(
-    new Dictionary<string, string>
-    {
-        ["abc"] = "123",
-        ["def"] = "456",
-    }
-);
-```
-
-### Misc
-```cs
-// AFUtils.Misc
-
-// Returns the Humanoid_View belonging to the local player.
-public static Humanoid_View GetLocalHumanoidView()
-
-// Returns `true` if this client is the room host.
-// Always `true` outside of an online room.
-public static bool IsHost()
-
-// Prints a list of components belonging to a Quantum entity.
-public static void PrintComponentList(EntityRef r)
 ```
