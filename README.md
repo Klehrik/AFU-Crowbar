@@ -56,6 +56,7 @@ var cmd = new Command(
 );
 
 // Execute the command for all players
+// Returns `true` if successful
 cmd.Send();
 ```
 
