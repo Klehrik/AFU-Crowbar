@@ -1,5 +1,5 @@
 # AFUtils
-Small miscellaneous library for modding Airframe Ultra.
+Small miscellaneous library for Airframe Ultra modding.
 
 ## Setup
 - Download `AFUtils.dll` (and optionally `AFUtils.xml` for documentation) and place them in the `Mods` folder.
