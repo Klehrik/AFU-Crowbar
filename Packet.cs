@@ -6,7 +6,8 @@ namespace AFUtils;
 
 /// <summary>
 /// Allows for sending an arbitrary string dictionary to all other players; this should <i>not</i> be done often. <br></br>
-/// Works by making use of <c>Realtime.Player.CustomProperties</c>.
+/// Works by making use of <c>Realtime.Player.CustomProperties</c>. <br></br><br></br>
+/// Do <i>not</i> use the key <c>"__identifier"</c> since that is reserved for internal use.
 /// </summary>
 public class Packet
 {
@@ -44,6 +45,10 @@ public class Packet
         var table = new PhotonHashtable();
         foreach (var pair in dict)
         {
+            if (pair.Key == "__identifier")
+            {
+                throw new ArgumentException("Do not use the key '__identifier'.");
+            }
             table.Add(pair.Key, pair.Value);
         }
         table.Add("__identifier", Identifier);
