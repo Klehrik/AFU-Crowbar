@@ -1,9 +1,9 @@
 ﻿using MelonLoader;
 
-[assembly: MelonInfo(typeof(AFUtils.Core), "AFUtils", "1.0.3", "Klehrik", null)]
+[assembly: MelonInfo(typeof(Crowbar.Core), "Crowbar", "1.0.3", "Klehrik", null)]
 [assembly: MelonGame("Videocult", "Airframe")]
 
-namespace AFUtils;
+namespace Crowbar;
 
 public class Core : MelonMod
 {

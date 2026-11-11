@@ -2,7 +2,7 @@
 using Il2Cpp;
 using Il2CppPhoton.Client;
 
-namespace AFUtils;
+namespace Crowbar;
 
 /// <summary>
 /// Allows for sending an arbitrary string dictionary to all other players; this should <i>not</i> be done often. <br></br>
@@ -11,6 +11,8 @@ namespace AFUtils;
 /// </summary>
 public class Packet
 {
+    private const string CustomPropertyName = "Crowbar_Packet";
+    private const string IdentifierKey      = "__identifier";
     private static readonly Dictionary<string, Action<Il2CppPhoton.Realtime.Player, Dictionary<string, string>>> callbacks = new Dictionary<string, Action<Il2CppPhoton.Realtime.Player, Dictionary<string, string>>>();
 
     /// <summary>
@@ -45,16 +47,16 @@ public class Packet
         var table = new PhotonHashtable();
         foreach (var pair in dict)
         {
-            if (pair.Key == "__identifier")
+            if (pair.Key == IdentifierKey)
             {
                 throw new ArgumentException("Do not use the key '__identifier'.");
             }
             table.Add(pair.Key, pair.Value);
         }
-        table.Add("__identifier", Identifier);
+        table.Add(IdentifierKey, Identifier);
 
         var properties = new PhotonHashtable();
-        properties.Add("AFUtils_Packet", table);
+        properties.Add(CustomPropertyName, table);
         client.LocalPlayer.SetCustomProperties(properties, null);
         return true;
     }
@@ -65,10 +67,10 @@ public class Packet
         static void Postfix(Il2CppPhoton.Realtime.Player targetPlayer, PhotonHashtable changedProps)
         {
             if (targetPlayer.IsLocal) return;
-            if (!changedProps.ContainsKey("AFUtils_Packet")) return;
+            if (!changedProps.ContainsKey("Crowbar_Packet")) return;
 
             // Convert PhotonHashtable to Dictionary
-            var table = changedProps["AFUtils_Packet"].Cast<PhotonHashtable>();
+            var table = changedProps["Crowbar_Packet"].Cast<PhotonHashtable>();
             var dict = new Dictionary<string, string>();
             string identifier = null;
             foreach (var pair in table)
@@ -76,7 +78,7 @@ public class Packet
                 var key = pair.Key.ToString();
                 var value = pair.Value.ToString();
 
-                if (key == "__identifier")
+                if (key == IdentifierKey)
                 {
                     identifier = value;
                 }

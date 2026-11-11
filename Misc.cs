@@ -2,7 +2,7 @@
 using Il2CppQuantum;
 using Il2CppView_Humanoid;
 
-namespace AFUtils;
+namespace Crowbar;
 
 /// <summary>
 /// Contains miscellaneous helper methods.

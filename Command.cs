@@ -3,7 +3,7 @@ using HarmonyLib;
 using Il2CppQuantum;
 using Il2CppQuantum_Core;
 
-namespace AFUtils;
+namespace Crowbar;
 
 /// <summary>
 /// Allows for creating custom DeterministicCommands. <br></br>
@@ -26,7 +26,7 @@ public class Command
     {
         // Sync command identifier<->ID mapping with the host's upon joining a room
         packet = new Packet(
-            "AFUtils_Command",
+            "Crowbar_Command",
             (Il2CppPhoton.Realtime.Player player, Dictionary<string, string> data) =>
             {
                 var sb = new StringBuilder("Incoming host command mappings:");
@@ -68,7 +68,7 @@ public class Command
         );
     }
 
-    /// <param name="callback"><para>The function to call when the command is sent.</para> <para>It is called for every client, including the caller. <br></br>For the caller specifically, it is called multiple times (on every predicted frame <br></br>plus the final verified one); if you don't want this, add a check for <c>Frame.IsVerified</c></para></param>
+    /// <param name="callback"><para>The function to call when the command is sent.</para> <para>It is called for every client, including the caller. <br></br>For the caller specifically, it is called multiple times (on every predicted frame <br></br>plus the final verified one); if you don't want this, add a check for <c>Frame.IsVerified</c>.</para></param>
     public Command(string identifier, Action<Frame> callback)
     {
         if (callbacks.ContainsKey(identifier))

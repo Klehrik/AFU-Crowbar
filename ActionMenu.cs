@@ -3,7 +3,7 @@ using Il2CppHUD;
 using Il2CppCustomUIRendering_Access;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
-namespace AFUtils;
+namespace Crowbar;
 
 /// <summary>
 /// Allows for adding new options to the action menu. <br></br>
