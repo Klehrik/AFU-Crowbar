@@ -1,4 +1,4 @@
-# Crowbar
+# [Crowbar](https://thunderstore.io/c/airframe-ultra/p/Klehrik/Crowbar/)
 Small miscellaneous library for Airframe Ultra modding.
 
 ## Setup
