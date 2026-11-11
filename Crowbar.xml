@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Crowbar</name>
+    </assembly>
+    <members>
+        <member name="T:Crowbar.ActionMenu">
+            <summary>
+            Allows for adding new options to the action menu. <br></br>
+            Works by hijacking <c>SpecialActionCommand</c> and using unique action IDs.
+            </summary>
+        </member>
+        <member name="M:Crowbar.ActionMenu.RegisterForCollection(System.Action)">
+            <summary>
+            Registers a function to be called whenever option collection happens for the menu.
+            </summary>
+            <param name="callback"><c>AddOption</c> should be called in here to add options.</param>
+        </member>
+        <member name="M:Crowbar.ActionMenu.AddOption(Crowbar.ActionMenu.Option,System.String)">
+            <summary>
+            Adds an option to the action menu.
+            </summary>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="M:Crowbar.ActionMenu.AddOption(Crowbar.ActionMenu.Option)">
+            <summary>
+            Adds an option to the action menu.
+            </summary>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="T:Crowbar.ActionMenu.Option">
+            <summary>
+            Represents an action menu option.
+            </summary>
+        </member>
+        <member name="P:Crowbar.ActionMenu.Option.ID">
+            <summary>
+            The unique action ID of the option. <br></br>
+            These start at <c>10000</c>.
+            </summary>
+        </member>
+        <member name="P:Crowbar.ActionMenu.Option.Label">
+            <summary>
+            The default label for the option. <br></br>
+            Used if one is not explicitly passed to <c>AddOption</c>.
+            </summary>
+        </member>
+        <member name="M:Crowbar.ActionMenu.Option.#ctor(System.Action,System.String)">
+            <param name="callback">The function to call when the option is selected.</param>
+        </member>
+        <member name="M:Crowbar.ActionMenu.Option.#ctor(System.Action)">
+            <param name="callback">The function to call when the option is selected.</param>
+        </member>
+        <member name="T:Crowbar.Command">
+            <summary>
+            Allows for creating custom DeterministicCommands. <br></br>
+            Works by hijacking <c>SpecialActionCommand</c> and using unique action IDs.
+            </summary>
+        </member>
+        <member name="P:Crowbar.Command.Identifier">
+            <summary>
+            The unique identifier for this command.
+            </summary>
+        </member>
+        <member name="M:Crowbar.Command.#ctor(System.String,System.Action{Il2CppQuantum.Frame})">
+            <param name="callback"><para>The function to call when the command is sent.</para> <para>It is called for every client, including the caller. <br></br>For the caller specifically, it is called multiple times (on every predicted frame <br></br>plus the final verified one); if you don't want this, add a check for <c>Frame.IsVerified</c>.</para></param>
+        </member>
+        <member name="M:Crowbar.Command.Send(System.String@)">
+            <summary>
+            Executes the command for every client.
+            </summary>
+            <param name="error">The error message on a fail (usually when the local <c>Humanoid_View</c> does not exist yet).</param>
+            <returns><c>true</c> if successful.</returns>
+        </member>
+        <member name="M:Crowbar.Command.Send">
+            <summary>
+            Executes the command for every client.
+            </summary>
+            <returns><c>true</c> if successful.</returns>
+        </member>
+        <member name="T:Crowbar.Misc">
+            <summary>
+            Contains miscellaneous helper methods.
+            </summary>
+        </member>
+        <member name="M:Crowbar.Misc.GetLocalHumanoidView">
+            <summary>
+            Returns the <c>Humanoid_View</c> belonging to the local player.
+            </summary>
+        </member>
+        <member name="M:Crowbar.Misc.IsHost">
+            <summary>
+            Returns <c>true</c> if this client is the room host. <br></br>
+            Always <c>true</c> outside of an online room.
+            </summary>
+        </member>
+        <member name="M:Crowbar.Misc.PrintComponentList(Il2CppQuantum.EntityRef)">
+            <summary>
+            Prints a list of components belonging to a Quantum entity.
+            </summary>
+        </member>
+        <member name="T:Crowbar.Packet">
+            <summary>
+            Allows for sending an arbitrary string dictionary to all other players; this should <i>not</i> be done often. <br></br>
+            Works by making use of <c>Realtime.Player.CustomProperties</c>. <br></br><br></br>
+            Do <i>not</i> use the key <c>"__identifier"</c> since that is reserved for internal use.
+            </summary>
+        </member>
+        <member name="P:Crowbar.Packet.Identifier">
+            <summary>
+            The unique identifier for this packet.
+            </summary>
+        </member>
+        <member name="M:Crowbar.Packet.#ctor(System.String,System.Action{Il2CppPhoton.Realtime.Player,System.Collections.Generic.Dictionary{System.String,System.String}})">
+            <param name="callback">The function to call when the packet is received. <br></br>It is called for every client except the sender.</param>
+        </member>
+        <member name="M:Crowbar.Packet.Send(System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Sends an arbitrary string dictionary to all other clients.
+            </summary>
+            <returns><c>true</c> if successful.</returns>
+        </member>
+    </members>
+</doc>
