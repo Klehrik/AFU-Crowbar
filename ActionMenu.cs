@@ -95,6 +95,8 @@ public static class ActionMenu
         [HarmonyPatch(nameof(RadialMenu_Component.RefreshItems))]
         static void RefreshItemsPrefix(RadialMenu_Component __instance)
         {
+            // This needs to be in prefix since it runs before
+            // the `RadialMenuGraphic.SetItems` prefix patch below
             if (__instance.type == HUD_Component.HUDComponentType.Radial_SpecialAction)
             {
                 collecting = true;
