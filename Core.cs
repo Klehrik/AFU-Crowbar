@@ -1,6 +1,6 @@
 ﻿using MelonLoader;
 
-[assembly: MelonInfo(typeof(Crowbar.Core), "Crowbar", "1.0.3", "Klehrik", null)]
+[assembly: MelonInfo(typeof(Crowbar.Core), "Crowbar", "1.0.4", "Klehrik", null)]
 [assembly: MelonGame("Videocult", "Airframe")]
 
 namespace Crowbar;
