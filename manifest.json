@@ -1,7 +1,9 @@
 ﻿{
     "name": "Crowbar",
-    "version_number": "1.0.3",
+    "version_number": "1.0.4",
     "description": "Small miscellaneous library for Airframe Ultra modding.",
     "website_url": "https://github.com/Klehrik/AFU-Crowbar",
-    "dependencies": []
+    "dependencies": [
+        "LavaGang-MelonLoader-0.7.3"
+    ]
 }
