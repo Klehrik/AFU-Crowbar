@@ -1,6 +1,6 @@
 ﻿{
     "name": "Crowbar",
-    "version_number": "1.0.4",
+    "version_number": "1.0.5",
     "description": "Small miscellaneous library for Airframe Ultra modding.",
     "website_url": "https://github.com/Klehrik/AFU-Crowbar",
     "dependencies": [

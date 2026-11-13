@@ -30,7 +30,13 @@ ActionMenu.RegisterForCollection(
         ActionMenu.AddOption(option);
 
         // Add option with specified text
-        ActionMenu.AddOption(option, "specific text");
+        ActionMenu.AddOption(option, "foo");
+
+        // Add grayed out (unselectable) option with default label
+        ActionMenu.AddOption(option, false);
+
+        // Add grayed out (unselectable) option with specified text
+        ActionMenu.AddOption(option, "bar", false);
     }
 );
 ```

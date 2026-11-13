@@ -12,8 +12,10 @@ namespace Crowbar;
 public static class ActionMenu
 {
     private static readonly List<Action> callbacks = new List<Action>();
-    private static readonly List<(int, string)> collected = new List<(int, string)>();
+    private static readonly Dictionary<int, string> indexToLabel = new Dictionary<int, string>();
+    private static int currentIndex = 0;
     private static bool collecting = false;
+    private static RadialMenu_Component.Actions instance;
 
     /// <summary>
     /// Registers a function to be called whenever option collection happens for the menu.
@@ -28,13 +30,14 @@ public static class ActionMenu
     /// Adds an option to the action menu.
     /// </summary>
     /// <exception cref="InvalidOperationException"></exception>
-    public static void AddOption(Option option, string label)
+    public static void AddOption(Option option, string label, bool selectable = true)
     {
         if (!collecting)
         {
             throw new InvalidOperationException("Cannot add options outside of collection time.");
         }
-        collected.Add((option.ID, label));
+        instance.AddItem(option.ID, !selectable);
+        indexToLabel[currentIndex++] = label;
     }
 
     /// <summary>
@@ -43,15 +46,37 @@ public static class ActionMenu
     /// <exception cref="InvalidOperationException"></exception>
     public static void AddOption(Option option)
     {
-        AddOption(option, option.Label);
+        AddOption(option, option.Label, true);
+    }
+
+    /// <summary>
+    /// Adds an option to the action menu.
+    /// </summary>
+    /// <exception cref="InvalidOperationException"></exception>
+    public static void AddOption(Option option, string label)
+    {
+        AddOption(option, label, true);
+    }
+
+    /// <summary>
+    /// Adds an option to the action menu.
+    /// </summary>
+    /// <param name="selectable">If <c>false</c>, the option will be grayed out. <br></br><c>true</c> by default.</param>
+    /// <exception cref="InvalidOperationException"></exception>
+    public static void AddOption(Option option, bool selectable)
+    {
+        AddOption(option, option.Label, selectable);
     }
 
     private static void CollectOptions()
     {
+        currentIndex = instance.items.Count;
+        collecting = true;
         foreach (var callback in callbacks)
         {
             callback();
         }
+        collecting = false;
     }
 
     /// <summary>
@@ -88,40 +113,35 @@ public static class ActionMenu
         }
     }
 
-    [HarmonyPatch(typeof(RadialMenu_Component))]
-    public static class RadialMenu_ComponentPatch
+    [HarmonyPatch(typeof(RadialMenu_Component.Actions))]
+    public static class RadialMenu_Component_ActionsPatch
     {
-        [HarmonyPrefix]
-        [HarmonyPatch(nameof(RadialMenu_Component.RefreshItems))]
-        static void RefreshItemsPrefix(RadialMenu_Component __instance)
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(RadialMenu_Component.Actions.RefreshItems))]
+        static void RefreshItemsPostfix(RadialMenu_Component.Actions __instance)
         {
-            // This needs to be in prefix since it runs before
-            // the `RadialMenuGraphic.SetItems` prefix patch below
-            if (__instance.type == HUD_Component.HUDComponentType.Radial_SpecialAction)
-            {
-                collecting = true;
-                CollectOptions();
-            }
+            // `RadialMenu_Component.RefreshItems()` calls `RM_C.Actions.RefreshItems()`
+            // first before `SetItem`, so collect options in here.
+            instance = __instance;
+            CollectOptions();
         }
 
         [HarmonyPostfix]
-        [HarmonyPatch(nameof(RadialMenu_Component.RefreshItems))]
-        static void RefreshItemsPostfix(RadialMenu_Component __instance)
+        [HarmonyPatch(nameof(RadialMenu_Component.Actions.GetOptionName))]
+        static void GetOptionNamePostfix(RadialMenu_Component.Actions __instance, ref string __result, ref int index)
         {
-            if (collected.Count <= 0) return;
-
-            var items = __instance.items;
-            foreach (var option in collected)
+            // This runs multiple times after
+            // `RM_C.Actions.RefreshItems()` for every option.
+            if (indexToLabel.TryGetValue(index, out string label))
             {
-                items.Add(option.Item1);
+                __result = label;
             }
-
-            // Need to clear so it doesn't bleed into the other
-            // menus since they are all `RadialMenu_Component`s
-            collected.Clear();
-            collecting = false;
         }
+    }
 
+    [HarmonyPatch(typeof(RadialMenu_Component))]
+    public static class RadialMenu_ComponentPatch
+    {
         [HarmonyPostfix]
         [HarmonyPatch(nameof(RadialMenu_Component.HandleSelection))]
         static void HandleSelectionPostfix(Il2CppHUD.RadialMenu_Component __instance, ref int selectedItemIndex, ref int selectedItemValue)
@@ -140,34 +160,6 @@ public static class ActionMenu
                 selectedItemIndex = -1;
                 selectedItemValue = -1;
             }
-        }
-    }
-
-    [HarmonyPatch(typeof(RadialMenuGraphic), nameof(RadialMenuGraphic.SetItems))]
-    public static class RadialMenuGraphicPatch
-    {
-        static void Prefix(RadialMenuGraphic __instance, ref Il2CppStringArray items)
-        {
-            if (collected.Count <= 0) return;
-
-            var ogCount = items.Length;
-            string[] labels = new string[ogCount + collected.Count];
-
-            // Add all original options to new array
-            for (var i = 0; i < ogCount; i++)
-            {
-                labels[i] = items[i];
-            }
-
-            // Add collected options
-            var j = ogCount;
-            foreach (var option in collected)
-            {
-                labels[j] = option.Item2;
-                j++;
-            }
-
-            items = new Il2CppStringArray(labels);
         }
     }
 }
