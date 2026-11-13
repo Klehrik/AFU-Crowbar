@@ -20,18 +20,7 @@
             <summary>
             Adds an option to the action menu.
             </summary>
-            <exception cref="T:System.InvalidOperationException"></exception>
-        </member>
-        <member name="M:Crowbar.ActionMenu.AddOption(Crowbar.ActionMenu.Option)">
-            <summary>
-            Adds an option to the action menu.
-            </summary>
-            <exception cref="T:System.InvalidOperationException"></exception>
-        </member>
-        <member name="M:Crowbar.ActionMenu.AddOption(Crowbar.ActionMenu.Option,System.String)">
-            <summary>
-            Adds an option to the action menu.
-            </summary>
+            <param name="selectable">If <c>false</c>, the option will be grayed out. <br></br><c>true</c> by default.</param>
             <exception cref="T:System.InvalidOperationException"></exception>
         </member>
         <member name="M:Crowbar.ActionMenu.AddOption(Crowbar.ActionMenu.Option,System.Boolean)">

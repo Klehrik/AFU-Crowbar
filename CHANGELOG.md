@@ -1,3 +1,6 @@
+### 1.0.6
+- Small method parameter tweak to previous update.
+
 ### 1.0.5
 - ActionMenu: Options can now be grayed out (unselectable).
 

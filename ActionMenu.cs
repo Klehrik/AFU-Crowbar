@@ -27,6 +27,7 @@ public static class ActionMenu
     /// <summary>
     /// Adds an option to the action menu.
     /// </summary>
+    /// <param name="selectable">If <c>false</c>, the option will be grayed out. <br></br><c>true</c> by default.</param>
     /// <exception cref="InvalidOperationException"></exception>
     public static void AddOption(Option option, string label, bool selectable = true)
     {
@@ -41,27 +42,9 @@ public static class ActionMenu
     /// <summary>
     /// Adds an option to the action menu.
     /// </summary>
-    /// <exception cref="InvalidOperationException"></exception>
-    public static void AddOption(Option option)
-    {
-        AddOption(option, option.Label, true);
-    }
-
-    /// <summary>
-    /// Adds an option to the action menu.
-    /// </summary>
-    /// <exception cref="InvalidOperationException"></exception>
-    public static void AddOption(Option option, string label)
-    {
-        AddOption(option, label, true);
-    }
-
-    /// <summary>
-    /// Adds an option to the action menu.
-    /// </summary>
     /// <param name="selectable">If <c>false</c>, the option will be grayed out. <br></br><c>true</c> by default.</param>
     /// <exception cref="InvalidOperationException"></exception>
-    public static void AddOption(Option option, bool selectable)
+    public static void AddOption(Option option, bool selectable = true)
     {
         AddOption(option, option.Label, selectable);
     }
